@@ -65,7 +65,7 @@
   /* ===== WELCOME SCREEN ===== */
   .welcome {
     min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center;
-    text-align:center; padding:40px 24px; position:relative;
+    text-align:center; padding:32px 24px; position:relative;
   }
   .welcome-inner { width:100%; max-width:460px; display:flex; flex-direction:column; align-items:center; }
   .welcome::before {
@@ -81,34 +81,39 @@
   .w-title {
     font-family:'Fraunces',serif; font-weight:500; font-size:clamp(38px,6.2vw,68px); line-height:0.98; letter-spacing:-1.5px;
     background:linear-gradient(120deg,#ffffff 0%,#fafafa 42%,#9a9a9a 100%); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
-    max-width:14ch; margin-bottom:18px; opacity:0; animation:rise 0.9s ease 0.25s forwards;
+    max-width:14ch; margin-bottom:16px; opacity:0; animation:rise 0.9s ease 0.25s forwards;
   }
   .w-tag {
-    font-size:12px; letter-spacing:2.5px; text-transform:uppercase; color:var(--gray-500); font-weight:500; margin-bottom:36px;
+    font-size:12px; letter-spacing:2.5px; text-transform:uppercase; color:var(--gray-500); font-weight:500; margin-bottom:26px;
     opacity:0; animation:rise 0.9s ease 0.4s forwards;
   }
   .w-prompt { font-size:13px; color:var(--gray-500); margin-bottom:14px; opacity:0; animation:rise 0.9s ease 0.55s forwards; }
   .selector { position:relative; width:min(440px,90vw); opacity:0; animation:rise 0.9s ease 0.7s forwards; }
-  .select-btn {
-    width:100%; background:var(--bg-soft); border:1px solid var(--line); border-radius:14px;
-    padding:16px 20px; font-size:15px; color:var(--gray-500); font-family:'Inter',sans-serif; text-align:left;
-    cursor:pointer; transition:all 0.25s ease; display:flex; justify-content:space-between; align-items:center;
+  .company-input {
+    width:100%; box-sizing:border-box; background:var(--bg-soft); border:1px solid var(--line); border-radius:14px;
+    padding:16px 20px; font-size:16px; color:var(--ink); font-family:'Inter',sans-serif; text-align:left;
+    outline:none; transition:border-color 0.25s ease;
   }
-  .select-btn:hover { border-color:rgba(200,148,63,0.45); color:var(--ink); }
-  .select-btn .arrow { color:var(--gold-1); transition:transform 0.3s ease; }
-  .selector.open .select-btn .arrow { transform:rotate(180deg); }
-  .dropdown {
-    position:absolute; top:calc(100% + 8px); left:0; right:0; max-height:0; overflow:hidden;
-    background:var(--bg-card); border:1px solid var(--line); border-radius:14px; opacity:0;
-    transition:max-height 0.3s ease, opacity 0.25s ease; z-index:50; text-align:left;
+  .company-input:focus { border-color:rgba(200,148,63,0.55); }
+  .company-input::placeholder { color:var(--gray-500); }
+  .results {
+    position:absolute; top:calc(100% + 8px); left:0; right:0; max-height:300px; overflow-y:auto;
+    -webkit-overflow-scrolling:touch; overscroll-behavior:contain;
+    background:var(--bg-card); border:1px solid rgba(200,148,63,0.3); border-radius:14px;
+    z-index:50; text-align:left; display:none;
   }
-  .selector.open .dropdown { max-height:340px; overflow-y:auto; opacity:1; border-color:rgba(200,148,63,0.3); }
+  .results.show { display:block; }
+  .results::-webkit-scrollbar { width:10px; }
+  .results::-webkit-scrollbar-thumb { background:rgba(200,148,63,0.45); border-radius:8px; border:2px solid transparent; background-clip:content-box; }
+  .results::-webkit-scrollbar-track { background:transparent; }
+  .dd-empty { padding:16px 22px; font-size:14px; color:var(--gray-500); text-align:center; }
   .opt {
-    padding:13px 22px; font-size:15px; color:var(--gray-300); cursor:pointer; transition:all 0.15s ease;
+    padding:14px 20px; font-size:15px; color:var(--gray-300); cursor:pointer; transition:all 0.15s ease;
     border-bottom:1px solid rgba(38,38,38,0.6);
   }
   .opt:last-child { border-bottom:none; }
-  .opt:hover { background:rgba(200,148,63,0.08); color:var(--ink); padding-left:26px; }
+  .opt:hover { background:rgba(200,148,63,0.08); color:var(--ink); padding-left:24px; }
+
 
   /* ===== REVEAL ===== */
   .reveal {
@@ -231,13 +236,11 @@
     .item .pill { grid-column:2; justify-self:start; margin-top:6px; }
   }
   @media (max-width:600px), (max-height:760px) {
-    /* Truly center vertically; dropdown overlays without shifting the layout */
-    .welcome { justify-content:center; padding:40px 22px; }
+    .welcome { justify-content:center; padding:40px 22px; padding-bottom:34vh; }
     .reveal { min-height:100vh; justify-content:center; padding:72px 22px 40px; }
     .w-tag { margin-bottom:28px; }
     .theme-toggle { top:12px; right:12px; transform:scale(0.85); transform-origin:top right; }
-    /* Cap the open list so it fits below the button without growing the page */
-    .selector.open .dropdown { max-height:32vh; overflow-y:auto; -webkit-overflow-scrolling:touch; }
+    .results { max-height:min(280px,38vh); }
   }
 
 </style>
@@ -251,10 +254,10 @@
     <div class="w-eyebrow">Coffee Cart Collective</div>
     <div class="w-title">Welcome to the Cincinnati Collective</div>
     <div class="w-tag">For Founders Building Beyond the Cart</div>
-    <div class="w-prompt">Select your company to get settled</div>
+    <div class="w-prompt">Enter your company name</div>
     <div class="selector" id="selector">
-      <button class="select-btn" id="selectBtn"><span id="selectLabel">Choose your company</span><span class="arrow">&#9662;</span></button>
-      <div class="dropdown" id="dropdown"></div>
+      <input type="text" class="company-input" id="companyInput" placeholder="Enter your company name" autocomplete="off">
+      <div class="results" id="ddList"></div>
     </div>
   </div>
 
@@ -335,22 +338,34 @@ const GUESTS = [
   {co:"Carrier Coffee", house:"offsite"}
 ].sort((a,b)=>a.co.localeCompare(b.co));
 
-// Build dropdown
-const dd = document.getElementById('dropdown');
-GUESTS.forEach(g => {
-  const o = document.createElement('div');
-  o.className='opt'; o.textContent=g.co.replace('\u2019','\u2019'); o.dataset.co=g.co;
-  o.addEventListener('click',()=>selectGuest(g));
-  dd.appendChild(o);
-});
-const selector=document.getElementById('selector');
-document.getElementById('selectBtn').addEventListener('click',()=>selector.classList.toggle('open'));
-document.addEventListener('click',e=>{ if(!selector.contains(e.target)) selector.classList.remove('open'); });
+// Company search input
+const dd = document.getElementById('ddList');
+const companyInput = document.getElementById('companyInput');
+const selector = document.getElementById('selector');
+function renderOptions(filter){
+  dd.innerHTML='';
+  const q=(filter||'').trim().toLowerCase();
+  if(q===''){ dd.classList.remove('show'); return; }
+  const matches=GUESTS.filter(g=>g.co.toLowerCase().includes(q));
+  dd.classList.add('show');
+  if(matches.length===0){
+    const e=document.createElement('div'); e.className='dd-empty'; e.textContent='No match — check spelling';
+    dd.appendChild(e); return;
+  }
+  matches.forEach(g => {
+    const o = document.createElement('div');
+    o.className='opt'; o.textContent=g.co; o.dataset.co=g.co;
+    o.addEventListener('click',()=>selectGuest(g));
+    dd.appendChild(o);
+  });
+}
+companyInput.addEventListener('input',e=>renderOptions(e.target.value));
+document.addEventListener('click',e=>{ if(!selector.contains(e.target)) dd.classList.remove('show'); });
 
 let CURRENT_GUEST=null;
 function selectGuest(g){
   CURRENT_GUEST=g;
-  selector.classList.remove('open');
+  dd.classList.remove('show');
   document.getElementById('msgCompany').innerHTML = g.co;
   document.getElementById('welcome').style.display='none';
   document.getElementById('messageStep').classList.add('show');
@@ -380,7 +395,7 @@ function backToStart(){
   document.getElementById('reveal').classList.remove('show');
   document.getElementById('messageStep').classList.remove('show');
   document.getElementById('welcome').style.display='flex';
-  document.getElementById('selectLabel').textContent='Choose your company';
+  companyInput.value=''; dd.classList.remove('show');
 }
 document.getElementById('msgBackBtn').addEventListener('click', backToStart);
 document.getElementById('backBtn').addEventListener('click', backToStart);
