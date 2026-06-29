@@ -65,32 +65,33 @@
   /* ===== WELCOME SCREEN ===== */
   .welcome {
     min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center;
-    text-align:center; padding:48px 24px; position:relative;
+    text-align:center; padding:40px 24px; position:relative;
   }
+  .welcome-inner { width:100%; max-width:460px; display:flex; flex-direction:column; align-items:center; }
   .welcome::before {
     content:''; position:absolute; inset:0;
     background:radial-gradient(70% 90% at 50% 30%, rgba(200,148,63,0.10), transparent 60%);
     pointer-events:none;
   }
   .w-eyebrow {
-    font-size:12px; letter-spacing:5px; text-transform:uppercase; font-weight:600; margin-bottom:24px;
+    font-size:11px; letter-spacing:4px; text-transform:uppercase; font-weight:600; margin-bottom:18px;
     background:linear-gradient(90deg,#f4b750,#a7762b); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
     opacity:0; animation:rise 0.9s ease 0.1s forwards;
   }
   .w-title {
-    font-family:'Fraunces',serif; font-weight:500; font-size:clamp(44px,8vw,86px); line-height:0.95; letter-spacing:-2px;
+    font-family:'Fraunces',serif; font-weight:500; font-size:clamp(38px,6.2vw,68px); line-height:0.98; letter-spacing:-1.5px;
     background:linear-gradient(120deg,#ffffff 0%,#fafafa 42%,#9a9a9a 100%); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
-    max-width:14ch; margin-bottom:22px; opacity:0; animation:rise 0.9s ease 0.25s forwards;
+    max-width:14ch; margin-bottom:18px; opacity:0; animation:rise 0.9s ease 0.25s forwards;
   }
   .w-tag {
-    font-size:13px; letter-spacing:3px; text-transform:uppercase; color:var(--gray-500); font-weight:500; margin-bottom:48px;
+    font-size:12px; letter-spacing:2.5px; text-transform:uppercase; color:var(--gray-500); font-weight:500; margin-bottom:36px;
     opacity:0; animation:rise 0.9s ease 0.4s forwards;
   }
-  .w-prompt { font-size:14px; color:var(--gray-500); margin-bottom:16px; opacity:0; animation:rise 0.9s ease 0.55s forwards; }
+  .w-prompt { font-size:13px; color:var(--gray-500); margin-bottom:14px; opacity:0; animation:rise 0.9s ease 0.55s forwards; }
   .selector { position:relative; width:min(440px,90vw); opacity:0; animation:rise 0.9s ease 0.7s forwards; }
   .select-btn {
     width:100%; background:var(--bg-soft); border:1px solid var(--line); border-radius:14px;
-    padding:18px 22px; font-size:16px; color:var(--gray-500); font-family:'Inter',sans-serif; text-align:left;
+    padding:16px 20px; font-size:15px; color:var(--gray-500); font-family:'Inter',sans-serif; text-align:left;
     cursor:pointer; transition:all 0.25s ease; display:flex; justify-content:space-between; align-items:center;
   }
   .select-btn:hover { border-color:rgba(200,148,63,0.45); color:var(--ink); }
@@ -138,6 +139,7 @@
   }
   .hc-map:hover { background:rgba(200,148,63,0.1); }
   .hc-note { font-size:14px; color:var(--gray-300); line-height:1.7; margin-top:4px; }
+  .hc-sticky { font-size:13.5px; color:var(--gray-500); line-height:1.6; margin-top:18px; padding-top:16px; border-top:1px solid var(--line); }
   .r-continue {
     display:inline-block; text-decoration:none; font-size:14px; font-weight:600; letter-spacing:0.5px; cursor:pointer;
     color:#3a2a08; background:linear-gradient(135deg, #f6d79a 0%, #f3c878 38%, #f0b84e 100%); padding:15px 38px; border-radius:40px; box-shadow:0 4px 18px rgba(200,148,63,0.22), inset 0 1px 0 rgba(255,255,255,0.35);
@@ -228,6 +230,16 @@
     .item { grid-template-columns:76px 1fr; }
     .item .pill { grid-column:2; justify-self:start; margin-top:6px; }
   }
+  @media (max-width:600px), (max-height:760px) {
+    /* Truly center vertically; dropdown overlays without shifting the layout */
+    .welcome { justify-content:center; padding:40px 22px; }
+    .reveal { min-height:100vh; justify-content:center; padding:72px 22px 40px; }
+    .w-tag { margin-bottom:28px; }
+    .theme-toggle { top:12px; right:12px; transform:scale(0.85); transform-origin:top right; }
+    /* Cap the open list so it fits below the button without growing the page */
+    .selector.open .dropdown { max-height:32vh; overflow-y:auto; -webkit-overflow-scrolling:touch; }
+  }
+
 </style>
 </head>
 <body>
@@ -356,7 +368,8 @@ function showReveal(){
     hc.innerHTML = `<div class="hc-label">Your House</div>
       <div class="hc-house">${h.name}</div>
       <div class="hc-addr">${h.addr}</div>
-      <a class="hc-map" href="${h.map}" target="_blank">Open in Maps &rarr;</a>`;
+      <a class="hc-map" href="${h.map}" target="_blank">Open in Maps &rarr;</a>
+      <div class="hc-sticky">Please look for a sticky note on the door with your name on it.</div>`;
   }
   document.getElementById('messageStep').classList.remove('show');
   document.getElementById('reveal').classList.add('show');
