@@ -87,6 +87,14 @@
     font-size:12px; letter-spacing:2.5px; text-transform:uppercase; color:var(--gray-500); font-weight:500; margin-bottom:26px;
     opacity:0; animation:rise 0.9s ease 0.4s forwards;
   }
+  .w-countdown {
+    display:none; align-items:center; gap:10px; margin-bottom:30px; padding:10px 22px;
+    background:var(--bg-soft); border:1px solid rgba(200,148,63,0.28); border-radius:30px;
+    opacity:0; animation:rise 0.9s ease 0.5s forwards;
+  }
+  .w-countdown.show { display:inline-flex; }
+  .w-countdown .cd-num { font-family:'Fraunces',serif; font-size:22px; font-weight:500; color:var(--gold-1); line-height:1; }
+  .w-countdown .cd-label { font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--gray-500); font-weight:600; }
   .w-prompt { font-size:13px; color:var(--gray-500); margin-bottom:14px; opacity:0; animation:rise 0.9s ease 0.55s forwards; }
   .selector { position:relative; width:min(440px,90vw); opacity:0; animation:rise 0.9s ease 0.7s forwards; }
   .company-input {
@@ -113,6 +121,7 @@
   }
   .opt:last-child { border-bottom:none; }
   .opt:hover { background:rgba(200,148,63,0.08); color:var(--ink); padding-left:24px; }
+  .opt.active { background:rgba(200,148,63,0.14); color:var(--ink); }
 
 
   /* ===== REVEAL ===== */
@@ -121,6 +130,20 @@
     text-align:center; padding:64px 24px; position:relative;
   }
   .reveal.show { display:flex; animation:fade 0.7s ease; }
+  /* Subtle, professional staggered settle-in for reveal content */
+  .reveal.show > * { opacity:0; animation:revealRise 0.65s cubic-bezier(0.22,0.61,0.36,1) forwards; }
+  .reveal.show > *:nth-child(1){ animation-delay:0.05s; }
+  .reveal.show > *:nth-child(2){ animation-delay:0.13s; }
+  .reveal.show > *:nth-child(3){ animation-delay:0.21s; }
+  .reveal.show > *:nth-child(4){ animation-delay:0.29s; }
+  .reveal.show > *:nth-child(5){ animation-delay:0.37s; }
+  .reveal.show > *:nth-child(6){ animation-delay:0.45s; }
+  .reveal.show > *:nth-child(7){ animation-delay:0.53s; }
+  .reveal.show > *:nth-child(8){ animation-delay:0.61s; }
+  .reveal.show > *:nth-child(9){ animation-delay:0.69s; }
+  .reveal.show > *:nth-child(10){ animation-delay:0.77s; }
+  @keyframes revealRise { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:none; } }
+  @media (prefers-reduced-motion: reduce){ .reveal.show > * { animation:none; opacity:1; } }
   .reveal::before { content:''; position:absolute; inset:0; background:radial-gradient(60% 70% at 50% 25%, rgba(200,148,63,0.06), transparent 60%); pointer-events:none; }
   .r-greeting { font-size:13px; letter-spacing:4px; text-transform:uppercase; color:var(--gray-500); margin-bottom:18px; }
   .r-message { max-width:520px; font-size:16px; line-height:1.7; color:var(--gray-300); margin:0 auto 18px; font-style:italic; }
@@ -145,6 +168,48 @@
   .hc-map:hover { background:rgba(200,148,63,0.1); }
   .hc-note { font-size:14px; color:var(--gray-300); line-height:1.7; margin-top:4px; }
   .hc-sticky { font-size:13.5px; color:var(--gray-500); line-height:1.6; margin-top:18px; padding-top:16px; border-top:1px solid var(--line); }
+  .meet-card {
+    background:var(--bg-soft); border:1px solid var(--line); border-radius:18px; padding:28px 40px; max-width:480px; width:100%; margin-bottom:28px;
+  }
+  .meet-text { font-size:15px; color:var(--gray-300); line-height:1.6; margin-bottom:10px; }
+  .meet-addr { font-family:'Fraunces',serif; font-size:20px; font-weight:500; line-height:1.4; margin-bottom:18px; }
+  .bring-toggle {
+    display:flex; align-items:center; justify-content:center; gap:10px; width:100%; max-width:480px;
+    background:var(--bg-soft); border:1px solid var(--line); border-radius:18px; padding:20px 28px;
+    cursor:pointer; transition:all 0.22s ease; font-family:'Inter',sans-serif; margin-bottom:0;
+  }
+  .bring-toggle:hover { border-color:rgba(200,148,63,0.45); }
+  .bring-toggle-label { font-size:11px; letter-spacing:3px; text-transform:uppercase; color:var(--gold-1); font-weight:600; }
+  .bring-chev { color:var(--gold-1); font-size:13px; transition:transform 0.28s ease; }
+  .bring-toggle[aria-expanded="true"] { border-radius:18px 18px 0 0; border-bottom-color:transparent; }
+  .bring-toggle[aria-expanded="true"] .bring-chev { transform:rotate(180deg); }
+  .bring-panel {
+    max-width:480px; width:100%; max-height:0; overflow:hidden;
+    background:var(--bg-soft); border:1px solid var(--line); border-top:none; border-radius:0 0 18px 18px;
+    transition:max-height 0.4s ease, padding 0.4s ease, margin 0.4s ease; padding:0 28px; text-align:left;
+    margin-bottom:28px; opacity:0;
+  }
+  .bring-panel.open { max-height:520px; padding:8px 36px 24px; opacity:1; }
+  .bring-list { list-style:none; margin:0 auto; padding:0; display:inline-block; text-align:left; }
+  .bring-list li {
+    position:relative; padding-left:24px; font-size:14.5px; color:var(--gray-300); line-height:1.55; margin-bottom:12px;
+  }
+  .bring-list li:last-child { margin-bottom:0; }
+  .bring-list li::before {
+    content:''; position:absolute; left:2px; top:8px; width:6px; height:6px; border-radius:50%;
+    background:linear-gradient(135deg,var(--gold-1),var(--gold-2));
+  }
+  .r-cal {
+    display:inline-flex; align-items:center; gap:8px; text-decoration:none; font-size:13.5px; font-weight:600; letter-spacing:0.3px;
+    color:var(--gold-1); border:1px solid rgba(200,148,63,0.4); border-radius:30px; padding:12px 26px; margin-bottom:24px;
+    transition:all 0.2s ease; cursor:pointer; font-family:'Inter',sans-serif;
+  }
+  .r-cal:hover { background:rgba(200,148,63,0.1); transform:translateY(-1px); }
+  .r-text {
+    display:inline-block; text-decoration:none; font-size:13px; color:var(--gray-500); letter-spacing:0.3px;
+    margin-bottom:24px; transition:color 0.2s ease; font-family:'Inter',sans-serif;
+  }
+  .r-text:hover { color:var(--gold-1); }
   .r-continue {
     display:inline-block; text-decoration:none; font-size:14px; font-weight:600; letter-spacing:0.5px; cursor:pointer;
     color:#3a2a08; background:linear-gradient(135deg, #f6d79a 0%, #f3c878 38%, #f0b84e 100%); padding:15px 38px; border-radius:40px; box-shadow:0 4px 18px rgba(200,148,63,0.22), inset 0 1px 0 rgba(255,255,255,0.35);
@@ -162,6 +227,14 @@
   .s-hero .eyebrow { font-size:11px; letter-spacing:4px; text-transform:uppercase; font-weight:600; margin-bottom:14px; background:linear-gradient(90deg,#f4b750,#a7762b); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
   .s-hero h1 { font-family:'Fraunces',serif; font-weight:500; font-size:clamp(36px,6vw,64px); line-height:0.95; letter-spacing:-1.5px; background:linear-gradient(120deg,#fff 0%,#fafafa 40%,#9a9a9a 100%); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; margin-bottom:14px; }
   .s-meta { font-size:14px; color:var(--gray-500); letter-spacing:0.5px; }
+  .weather-strip {
+    display:inline-flex; align-items:center; gap:9px; margin-top:16px; padding:8px 18px;
+    background:var(--bg-soft); border:1px solid var(--line); border-radius:30px;
+    font-size:13px; color:var(--gray-300); letter-spacing:0.3px; opacity:0; transition:opacity 0.5s ease;
+  }
+  .weather-strip.show { opacity:1; }
+  .weather-strip .ws-icon { font-size:15px; }
+  .weather-strip strong { color:var(--gold-1); font-weight:600; }
   .s-meta strong { color:transparent; font-weight:600; background:linear-gradient(90deg,#f4b750,#c8943f); -webkit-background-clip:text; background-clip:text; }
 
   .speakers { display:flex; flex-wrap:wrap; gap:14px 32px; justify-content:center; padding:28px 0; border-bottom:1px solid var(--line); }
@@ -224,6 +297,21 @@
   .fl { font-size:11px; letter-spacing:2px; text-transform:uppercase; font-weight:700; margin-bottom:8px; background:linear-gradient(90deg,#f4b750,#a7762b); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
   .ft { font-size:14px; color:var(--gray-300); line-height:1.65; }
   .ft strong { color:var(--ink); font-weight:600; }
+  .faq { margin-top:48px; padding-top:40px; border-top:1px solid var(--gold-2); max-width:760px; margin-left:auto; margin-right:auto; }
+  .faq-title { font-family:'Fraunces',serif; font-size:24px; font-weight:500; text-align:center; margin-bottom:24px; color:var(--ink); }
+  .faq-item { border-bottom:1px solid var(--line); }
+  .faq-q {
+    width:100%; display:flex; align-items:center; justify-content:space-between; gap:16px; text-align:left;
+    background:none; border:none; cursor:pointer; padding:18px 4px; font-size:15px; font-weight:500; color:var(--ink); font-family:'Inter',sans-serif;
+    transition:color 0.2s ease;
+  }
+  .faq-q:hover { color:var(--gold-1); }
+  .faq-chev { color:var(--gold-1); font-size:12px; flex-shrink:0; transition:transform 0.28s ease; }
+  .faq-q.open .faq-chev { transform:rotate(180deg); }
+  .faq-a { max-height:0; overflow:hidden; transition:max-height 0.35s ease, padding 0.35s ease; }
+  .faq-a.open { max-height:200px; padding-bottom:18px; }
+  .faq-a p { margin:0; font-size:14.5px; line-height:1.65; color:var(--gray-300); padding:0 4px; }
+  .faq-a a { color:var(--gold-1); }
 
   @keyframes rise { from {opacity:0; transform:translateY(16px);} to {opacity:1; transform:none;} }
   @keyframes fade { from {opacity:0;} to {opacity:1;} }
@@ -236,11 +324,11 @@
     .item .pill { grid-column:2; justify-self:start; margin-top:6px; }
   }
   @media (max-width:600px), (max-height:760px) {
-    .welcome { justify-content:center; padding:40px 22px; padding-bottom:34vh; }
+    .welcome { justify-content:center; padding:40px 22px; }
     .reveal { min-height:100vh; justify-content:center; padding:72px 22px 40px; }
     .w-tag { margin-bottom:28px; }
     .theme-toggle { top:12px; right:12px; transform:scale(0.85); transform-origin:top right; }
-    .results { max-height:min(280px,38vh); }
+    .results { max-height:min(230px,26vh); }
   }
 
 </style>
@@ -254,6 +342,7 @@
     <div class="w-eyebrow">Coffee Cart Collective</div>
     <div class="w-title">Welcome to the Cincinnati Collective</div>
     <div class="w-tag">For Founders Building Beyond the Cart</div>
+    <div class="w-countdown" id="countdown"></div>
     <div class="w-prompt">Let's get you settled</div>
     <div class="selector" id="selector">
       <input type="text" class="company-input" id="companyInput" placeholder="Enter your company name" autocomplete="off">
@@ -265,7 +354,7 @@
   <div class="reveal" id="messageStep">
     <div class="r-greeting">Welcome</div>
     <div class="r-company" id="msgCompany"></div>
-    <p class="r-message">Thank you so much for coming. We’re honored that you would be part of this. We hope this weekend is full of refreshing, clarity, and lots of connection and growth. Let us know if there’s anything we can do to make your stay more comfortable.</p>
+    <p class="r-message">Thank you so much for coming. We’re honored that you would be part of this. We hope this week is full of refreshing, clarity, and lots of connection and growth. Let us know if there’s anything we can do to make your stay more comfortable.</p>
     <p class="r-signature">— Jonny &amp; the Coffee Cart Collective team</p>
     <button class="r-continue" id="msgContinueBtn">Continue &rarr;</button>
     <button class="r-back" id="msgBackBtn">&larr; Not you? Choose again</button>
@@ -276,6 +365,30 @@
     <div class="r-greeting">Welcome</div>
     <div class="r-company" id="revealCompany"></div>
     <div class="house-card" id="houseCard"></div>
+    <div class="meet-card">
+      <div class="hc-label">Where We Meet</div>
+      <div class="meet-text">All sessions and meals take place at the <strong>main house</strong> — walkable from any of the houses.</div>
+      <div class="meet-addr">1845 Kinney Avenue<br>Cincinnati, OH 45207</div>
+      <a class="hc-map" href="https://maps.google.com/?q=1845+Kinney+Avenue+Cincinnati+OH+45207" target="_blank">Open in Maps &rarr;</a>
+    </div>
+    <button class="bring-toggle" id="bringToggle" aria-expanded="false">
+      <span class="bring-toggle-label">What to Bring</span>
+      <span class="bring-chev">&#9662;</span>
+    </button>
+    <div class="bring-panel" id="bringPanel">
+      <ul class="bring-list">
+        <li>Comfortable, breathable clothes &mdash; July in Cincinnati runs warm &amp; humid</li>
+        <li>Activewear for our group activities</li>
+        <li>Comfortable walking shoes (sessions are walkable between houses)</li>
+        <li>One smart-casual outfit for the celebratory closing dinner</li>
+        <li>A light layer for air-conditioned rooms &amp; cooler evenings</li>
+        <li>Swimsuit &mdash; there&rsquo;s a hot tub at the house</li>
+        <li>Notebook or laptop for sessions, plus a charger</li>
+        <li>A few specific business challenges you&rsquo;d love feedback on</li>
+      </ul>
+    </div>
+    <a class="r-cal" id="calBtn" href="#">+ Add the week to your calendar</a>
+    <a class="r-text" href="sms:+17204325041">Questions? Text Jonny &rarr;</a>
     <button class="r-continue" id="continueBtn">View the Full Schedule &rarr;</button>
     <button class="r-back" id="backBtn">&larr; Not you? Choose again</button>
   </div>
@@ -287,6 +400,7 @@
         <div class="eyebrow">Coffee Cart Collective</div>
         <h1>Cincinnati '26</h1>
         <div class="s-meta"><strong>July 6&ndash;9, 2026</strong> &nbsp;&middot;&nbsp; Cincinnati, Ohio &nbsp;&middot;&nbsp; 23 Founders</div>
+        <div class="weather-strip" id="weatherStrip"></div>
       </div>
       <div class="speakers">
         <span class="sp-label">Speakers</span>
@@ -307,7 +421,42 @@
         <div><div class="fl">Getting There</div><div class="ft">Fly into <strong>CVG Airport</strong>, then Uber to your house</div></div>
         <div><div class="fl">Arrival</div><div class="ft">Arrive <strong>July 6 by 7 PM EST</strong> &middot; Doors open 5 PM</div></div>
         <div><div class="fl">What's Included</div><div class="ft"><strong>Stay + all meals</strong> &middot; Private chef &middot; Hot tub</div></div>
-        <div><div class="fl">Questions?</div><div class="ft">DM <strong>Jonny</strong> directly anytime</div></div>
+        <div><div class="fl">Questions?</div><div class="ft">Text or call <strong><a href="tel:+17204325041" style="color:var(--gold-1);text-decoration:none;">(720) 432-5041</a></strong></div></div>
+      </div>
+      <div class="faq" id="faq">
+        <div class="faq-title">Frequently Asked</div>
+        <div class="faq-item">
+          <button class="faq-q">What's included?<span class="faq-chev">&#9662;</span></button>
+          <div class="faq-a"><p>Lodging, all meals, and every session are covered. Just get yourself there &mdash; we&rsquo;ve got the rest.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">When should I arrive and depart?<span class="faq-chev">&#9662;</span></button>
+          <div class="faq-a"><p>Arrive July 6 by 7 PM (doors open at 5 PM). Book your departure flight after 12 PM on the 9th.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">What airport should I fly into?<span class="faq-chev">&#9662;</span></button>
+          <div class="faq-a"><p>Fly into CVG (Cincinnati/Northern Kentucky International). Rideshare from the airport to your house.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">How do I get around?<span class="faq-chev">&#9662;</span></button>
+          <div class="faq-a"><p>Everything&rsquo;s walkable &mdash; the houses and the main house where we meet are all close together.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">What should I wear?<span class="faq-chev">&#9662;</span></button>
+          <div class="faq-a"><p>Casual and comfortable for the days. Bring one smart-casual outfit for the celebratory closing dinner.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">Can meals accommodate dietary needs?<span class="faq-chev">&#9662;</span></button>
+          <div class="faq-a"><p>Absolutely &mdash; text Jonny with anything we should know and we&rsquo;ll take care of it.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">Is there anything to prep beforehand?<span class="faq-chev">&#9662;</span></button>
+          <div class="faq-a"><p>Bring a few business challenges you&rsquo;d love feedback on &mdash; the small-group time is most valuable when you come with something specific.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">Who do I contact day-of?<span class="faq-chev">&#9662;</span></button>
+          <div class="faq-a"><p>Text or call Jonny anytime at <a href="tel:+17204325041" style="color:var(--gold-1);text-decoration:none;">(720) 432-5041</a>.</p></div>
+        </div>
       </div>
     </div>
   </div>
@@ -342,24 +491,45 @@ const GUESTS = [
 const dd = document.getElementById('ddList');
 const companyInput = document.getElementById('companyInput');
 const selector = document.getElementById('selector');
+let activeIdx = -1;
+let currentMatches = [];
 function renderOptions(filter){
   dd.innerHTML='';
+  activeIdx = -1;
   const q=(filter||'').trim().toLowerCase();
-  if(q===''){ dd.classList.remove('show'); return; }
-  const matches=GUESTS.filter(g=>g.co.toLowerCase().includes(q));
+  if(q===''){ dd.classList.remove('show'); currentMatches=[]; return; }
+  currentMatches=GUESTS.filter(g=>g.co.toLowerCase().includes(q));
   dd.classList.add('show');
-  if(matches.length===0){
+  if(currentMatches.length===0){
     const e=document.createElement('div'); e.className='dd-empty'; e.textContent='No match — check spelling';
     dd.appendChild(e); return;
   }
-  matches.forEach(g => {
+  currentMatches.forEach((g,i) => {
     const o = document.createElement('div');
-    o.className='opt'; o.textContent=g.co; o.dataset.co=g.co;
+    o.className='opt'; o.textContent=g.co; o.dataset.co=g.co; o.dataset.idx=i;
     o.addEventListener('click',()=>selectGuest(g));
+    o.addEventListener('mousemove',()=>setActive(i));
     dd.appendChild(o);
   });
 }
+function setActive(i){
+  activeIdx=i;
+  [...dd.querySelectorAll('.opt')].forEach((el,idx)=>{
+    el.classList.toggle('active', idx===i);
+    if(idx===i) el.scrollIntoView({block:'nearest'});
+  });
+}
 companyInput.addEventListener('input',e=>renderOptions(e.target.value));
+companyInput.addEventListener('keydown',e=>{
+  if(!dd.classList.contains('show')||currentMatches.length===0){
+    if(e.key==='Enter' && currentMatches.length===1){ e.preventDefault(); selectGuest(currentMatches[0]); }
+    return;
+  }
+  if(e.key==='ArrowDown'){ e.preventDefault(); setActive(Math.min(activeIdx+1,currentMatches.length-1)); }
+  else if(e.key==='ArrowUp'){ e.preventDefault(); setActive(Math.max(activeIdx-1,0)); }
+  else if(e.key==='Enter'){ e.preventDefault(); const pick=activeIdx>=0?currentMatches[activeIdx]:(currentMatches.length===1?currentMatches[0]:null); if(pick) selectGuest(pick); }
+  else if(e.key==='Escape'){ companyInput.value=''; renderOptions(''); }
+});
 document.addEventListener('click',e=>{ if(!selector.contains(e.target)) dd.classList.remove('show'); });
 
 let CURRENT_GUEST=null;
@@ -474,6 +644,122 @@ document.querySelectorAll('.tab').forEach(tab=>{
   });
 });
 panels.addEventListener('click',e=>{ const it=e.target.closest('.item.has-detail'); if(it) it.classList.toggle('open'); });
+
+// ===== COUNTDOWN =====
+(function(){
+  const el=document.getElementById('countdown');
+  if(!el) return;
+  // Event start: July 6, 2026, 5:00 PM Eastern (doors open). ET is UTC-4 in July (EDT).
+  const target=new Date('2026-07-06T17:00:00-04:00').getTime();
+  function update(){
+    const now=Date.now();
+    const diff=target-now;
+    if(diff<=0){ el.classList.remove('show'); el.innerHTML=''; return; } // event here/past: just "Welcome"
+    const mins=Math.floor(diff/60000);
+    const hours=Math.floor(mins/60);
+    const days=Math.floor(hours/24);
+    let num, label;
+    if(days>=1){ num=days; label=days===1?'day to go':'days to go'; }
+    else if(hours>=1){ num=hours; label=hours===1?'hour to go':'hours to go'; }
+    else { num=Math.max(mins,1); label=mins===1?'minute to go':'minutes to go'; }
+    el.innerHTML='<span class="cd-num">'+num+'</span><span class="cd-label">'+label+'</span>';
+    el.classList.add('show');
+  }
+  update();
+  setInterval(update, 60000); // refresh each minute
+})();
+
+// ===== WHAT TO BRING TOGGLE =====
+(function(){
+  const t=document.getElementById('bringToggle');
+  const panel=document.getElementById('bringPanel');
+  if(!t||!panel) return;
+  t.addEventListener('click',()=>{
+    const open=panel.classList.toggle('open');
+    t.setAttribute('aria-expanded', open?'true':'false');
+  });
+})();
+
+// ===== FAQ ACCORDION =====
+(function(){
+  document.querySelectorAll('.faq-q').forEach(q=>{
+    q.addEventListener('click',()=>{
+      const a=q.nextElementSibling;
+      const isOpen=q.classList.contains('open');
+      q.classList.toggle('open', !isOpen);
+      a.classList.toggle('open', !isOpen);
+    });
+  });
+})();
+
+// ===== ADD TO CALENDAR (.ics) =====
+(function(){
+  const cal=document.getElementById('calBtn');
+  if(!cal) return;
+  function pad(n){return String(n).padStart(2,'0');}
+  // All-day-ish anchor events for the retreat (Eastern). Kept simple & robust across calendar apps.
+  const events=[
+    {start:'20260706T170000',end:'20260706T223000',title:'CCC Cincinnati \u2014 Arrival & Welcome Dinner',loc:'1845 Kinney Avenue, Cincinnati, OH 45207',desc:'Doors open 5 PM, arrive by 7 PM. Welcome dinner 7:30 PM.'},
+    {start:'20260707T080000',end:'20260707T210000',title:'CCC Cincinnati \u2014 Day 2: Kickoff',loc:'1845 Kinney Avenue, Cincinnati, OH 45207',desc:'Full day of trainings, panel, and group activity.'},
+    {start:'20260708T080000',end:'20260708T183000',title:'CCC Cincinnati \u2014 Day 3: Level Up',loc:'1845 Kinney Avenue, Cincinnati, OH 45207',desc:'Morning at the shop, afternoon sessions, Q&A, hot seat, celebratory dinner.'},
+    {start:'20260709T073000',end:'20260709T093000',title:'CCC Cincinnati \u2014 Day 4: Wrap Up & Departure',loc:'1845 Kinney Avenue, Cincinnati, OH 45207',desc:'Breakfast, then depart for CVG (~9 AM).'}
+  ];
+  function dtstamp(){const d=new Date();return d.getUTCFullYear()+pad(d.getUTCMonth()+1)+pad(d.getUTCDate())+'T'+pad(d.getUTCHours())+pad(d.getUTCMinutes())+pad(d.getUTCSeconds())+'Z';}
+  function buildICS(){
+    let lines=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Coffee Cart Collective//Cincinnati 2026//EN','CALSCALE:GREGORIAN'];
+    events.forEach((e,i)=>{
+      lines.push('BEGIN:VEVENT');
+      lines.push('UID:ccc-cincinnati-2026-'+i+'@coffeecartcollective');
+      lines.push('DTSTAMP:'+dtstamp());
+      lines.push('DTSTART;TZID=America/New_York:'+e.start);
+      lines.push('DTEND;TZID=America/New_York:'+e.end);
+      lines.push('SUMMARY:'+e.title);
+      lines.push('LOCATION:'+e.loc);
+      lines.push('DESCRIPTION:'+e.desc);
+      lines.push('END:VEVENT');
+    });
+    lines.push('END:VCALENDAR');
+    return lines.join('\r\n');
+  }
+  cal.addEventListener('click',ev=>{
+    ev.preventDefault();
+    const blob=new Blob([buildICS()],{type:'text/calendar;charset=utf-8'});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url; a.download='Cincinnati-Collective-2026.ics';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(()=>URL.revokeObjectURL(url),1500);
+  });
+})();
+
+// ===== WEATHER STRIP =====
+(function(){
+  const strip=document.getElementById('weatherStrip');
+  if(!strip) return;
+  function icon(code){
+    if(code===0) return '\u2600\ufe0f';            // clear
+    if(code<=3) return '\u26c5';                    // partly cloudy
+    if(code<=48) return '\u2601\ufe0f';             // cloud/fog
+    if(code<=67) return '\ud83c\udf26\ufe0f';       // rain
+    if(code<=77) return '\u2744\ufe0f';             // snow
+    if(code<=82) return '\ud83c\udf27\ufe0f';       // showers
+    return '\u26c8\ufe0f';                          // storm
+  }
+  function show(html){ strip.innerHTML=html; strip.classList.add('show'); }
+  // Seasonal fallback (early July in Cincinnati runs warm & humid)
+  const fallback='<span class="ws-icon">\u2600\ufe0f</span><span>Cincinnati, July 6&ndash;9 &mdash; <strong>highs near 87&deg;F</strong>, lows near 67&deg;F. Warm &amp; humid; pack light.</span>';
+  // Try live forecast (Open-Meteo, no key). Only meaningful within ~16 days of the event.
+  const url='https://api.open-meteo.com/v1/forecast?latitude=39.10&longitude=-84.51&daily=temperature_2m_max,temperature_2m_min,weather_code&temperature_unit=fahrenheit&timezone=America%2FNew_York&start_date=2026-07-06&end_date=2026-07-09';
+  fetch(url).then(r=>r.ok?r.json():Promise.reject()).then(d=>{
+    if(d&&d.daily&&d.daily.temperature_2m_max&&d.daily.temperature_2m_max.some(v=>v!==null)){
+      const highs=d.daily.temperature_2m_max.filter(v=>v!==null);
+      const lows=d.daily.temperature_2m_min.filter(v=>v!==null);
+      const hi=Math.round(Math.max(...highs)); const lo=Math.round(Math.min(...lows));
+      const code=d.daily.weather_code?d.daily.weather_code[0]:0;
+      show(`<span class="ws-icon">${icon(code)}</span><span>Cincinnati, July 6&ndash;9 &mdash; <strong>${lo}&ndash;${hi}&deg;F</strong> forecast</span>`);
+    } else { show(fallback); }
+  }).catch(()=>show(fallback));
+})();
 
 // ===== THEME TOGGLE =====
 (function(){
