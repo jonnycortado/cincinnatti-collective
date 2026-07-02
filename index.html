@@ -388,15 +388,16 @@
     <div class="house-card" id="houseCard"></div>
     <div class="meet-card">
       <div class="hc-label">Where We Meet</div>
-      <div class="meet-text">Your house is for sleeping &amp; hanging out. Here&rsquo;s where everything else happens &mdash; all venues are a short 10&ndash;15 min hop apart.</div>
+      <div class="meet-text">Your house is for sleeping &amp; hanging out. Everything else happens just across the river in Northern Kentucky &mdash; about 15&ndash;20 min from the houses, and the two venues are only 5 min apart.</div>
       <div class="venue-row">
         <div class="venue-name"><span class="loc-pin">&#9673;</span> Sessions &amp; Lunch</div>
-        <div class="venue-place">Coworking Space <span class="venue-tbd">(details to come)</span></div>
+        <div class="venue-place">The Coworking Space</div>
+        <a class="hc-map" href="https://maps.google.com/?q=727+Madison+Ave+Covington+KY+41011" target="_blank">Open in Maps &rarr;</a>
       </div>
       <div class="venue-row">
         <div class="venue-name"><span class="loc-pin">&#9673;</span> Breakfast &amp; Dinner</div>
         <div class="venue-place">Locke Coffee</div>
-        <a class="hc-map" href="https://maps.google.com/?q=Locke+Coffee+Cincinnati" target="_blank">Open in Maps &rarr;</a>
+        <a class="hc-map" href="https://maps.google.com/?q=Locke+Coffee+400+York+St+Newport+KY" target="_blank">Open in Maps &rarr;</a>
       </div>
     </div>
     <button class="bring-toggle" id="bringToggle" aria-expanded="false">
@@ -620,11 +621,11 @@ const DATA = {
     {time:"8:00 AM",t:"Pickup at Houses",who:"Vans depart \u2014 be ready out front"},
     {time:"8:30 AM",t:"Breakfast",loc:"Locke Coffee"},
     {time:"9:15 AM",t:"Depart for Coworking Space"},
-    {time:"9:30 AM",t:"Weekend Overview",who:"Jonny",pill:"Training",cls:"training",loc:"Coworking Space (TBD)",detail:"How to make the most of the weekend \u2014 set your goals and intentions."},
+    {time:"9:30 AM",t:"Weekend Overview",who:"Jonny",pill:"Training",cls:"training",loc:"The Coworking Space",detail:"How to make the most of the weekend \u2014 set your goals and intentions."},
     {time:"10:00 AM",t:"Systems That Scale",who:"Randy",pill:"Training",cls:"training",detail:"Document and automate the processes that let you grow without burning out."},
     {time:"11:00 AM",t:"Small Group Time",pill:"Connect"},
     {time:"11:30 AM",t:"Team Building Activity",pill:"Activity",cls:"activity"},
-    {time:"12:00 PM",t:"Lunch",loc:"Coworking Space (TBD)"},
+    {time:"12:00 PM",t:"Lunch",loc:"The Coworking Space"},
     {time:"1:00 PM",t:"Coffee Break"},
     {time:"1:30 PM",t:"Building Team Culture & Leading a Team",who:"Corbin",pill:"Training",cls:"training",detail:"Build a team that sells and a culture that lasts."},
     {time:"2:15 PM",t:"Break"},
@@ -640,24 +641,23 @@ const DATA = {
     {time:"8:00 AM",t:"Pickup at Houses",who:"Vans depart \u2014 be ready out front"},
     {time:"8:30 AM",t:"Breakfast",loc:"Locke Coffee"},
     {time:"9:15 AM",t:"Depart for Coworking Space"},
-    {time:"9:30 AM",t:"Corporate Positioning, Sales & Lifestyle",who:"Nikki",pill:"Training",cls:"training",loc:"Coworking Space (TBD)",detail:"Land bigger corporate clients while building a business that fits your life."},
+    {time:"9:30 AM",t:"Corporate Positioning, Sales & Lifestyle",who:"Nikki",pill:"Training",cls:"training",loc:"The Coworking Space",detail:"Land bigger corporate clients while building a business that fits your life."},
     {time:"11:00 AM",t:"Small Group Time",pill:"Connect"},
     {time:"11:30 AM",t:"Coffee Break"},
-    {time:"12:00 PM",t:"Lunch",loc:"Coworking Space (TBD)"},
+    {time:"12:00 PM",t:"Lunch",loc:"The Coworking Space"},
     {time:"1:00 PM",t:"AI & Software for Your Business",who:"Ryan",pill:"Training",cls:"training",detail:"Put AI and software to work \u2014 implement live as you learn."},
     {time:"2:30 PM",t:"Small Group Time",pill:"Connect"},
     {time:"3:00 PM",t:"Q&A: Open Floor",who:"Jonny \u00b7 Randy \u00b7 Nikki \u00b7 Ryan",pill:"Q&A",cls:"blue",detail:"Open floor with the speakers \u2014 bring your questions before we close the weekend."},
     {time:"3:45 PM",t:"Coffee Break"},
     {time:"4:00 PM",t:"Hot Seat: What I\'m Building Next",who:"Everyone shares one commitment",pill:"Close",cls:"blue",detail:"Each person shares one commitment for the year ahead \u2014 leave with accountability and momentum."},
-    {time:"5:15 PM",t:"Free Time",who:"Head back to the houses to rest & recharge",loc:"Your House"},
-    {time:"6:30 PM",t:"Depart for Locke Coffee"},
+    {time:"5:00 PM",t:"Free Time",who:"Relax nearby \u2014 explore Covington or Newport on the river",loc:"Around the Venues"},
     {time:"6:45 PM",t:"Coffee Shop Tour",who:"Ryan",pill:"Experience",cls:"activity",loc:"Locke Coffee",detail:"After-hours tour of Ryan\'s shop \u2014 the whole place to ourselves, cart-to-storefront up close."},
     {time:"7:30 PM",t:"Dinner",who:"Celebratory close",cls:"blue",loc:"Locke Coffee",detail:"Our final dinner together \u2014 celebrate the weekend and everything ahead."}
   ]},
   4:{name:"Wrap Up",date:"Thursday \u00b7 July 9",items:[
-    {time:"7:30 AM",t:"Pickup at Houses",who:"Earlier today \u2014 for morning flights"},
-    {time:"8:00 AM",t:"Breakfast",who:"Last morning together",loc:"Locke Coffee"},
-    {time:"9:00 AM",t:"Depart for CVG Airport",who:"Book your flight after 12 PM EST"}
+    {time:"7:30 AM",t:"Grab-and-Go Breakfast Opens",who:"Swing by Locke on your way out \u2014 coffee & something to go",loc:"Locke Coffee"},
+    {time:"9:00 AM",t:"Out of the Houses By",who:"Check out & head out on your own schedule"},
+    {time:"Your Flight",t:"Off to CVG",who:"Arrange your own ride \u2014 ~25\u201330 min to the airport. Book flights after 12 PM EST."}
   ]}
 };
 const panels=document.getElementById('panels');
@@ -740,10 +740,10 @@ panels.addEventListener('click',e=>{ const it=e.target.closest('.item.has-detail
   function pad(n){return String(n).padStart(2,'0');}
   // All-day-ish anchor events for the retreat (Eastern). Kept simple & robust across calendar apps.
   const events=[
-    {start:'20260706T170000',end:'20260706T223000',title:'CCC Cincinnati \u2014 Arrival & Welcome Dinner',loc:'Locke Coffee, Cincinnati, OH',desc:'Doors open 5 PM at your house, arrive by 7 PM. Welcome dinner 7:30 PM at Locke Coffee.'},
-    {start:'20260707T080000',end:'20260707T210000',title:'CCC Cincinnati \u2014 Day 2: Kickoff',loc:'Coworking Space (TBD), Cincinnati, OH',desc:'8 AM van pickup at houses, breakfast at Locke Coffee, then a full day of trainings, panel, and group activity at the coworking space. Dinner back at Locke.'},
-    {start:'20260708T080000',end:'20260708T193000',title:'CCC Cincinnati \u2014 Day 3: Level Up',loc:'Coworking Space (TBD), Cincinnati, OH',desc:'8 AM van pickup at houses, breakfast at Locke Coffee, sessions + Q&A + hot seat at the coworking space. Evening coffee shop tour and celebratory dinner at Locke Coffee.'},
-    {start:'20260709T073000',end:'20260709T090000',title:'CCC Cincinnati \u2014 Day 4: Wrap Up & Departure',loc:'Locke Coffee, Cincinnati, OH',desc:'7:30 AM van pickup at houses, breakfast at Locke Coffee, then depart for CVG (~9 AM). Book flights after 12 PM EST.'}
+    {start:'20260706T170000',end:'20260706T223000',title:'CCC Cincinnati \u2014 Arrival & Welcome Dinner',loc:'Locke Coffee, Newport, KY',desc:'Doors open 5 PM at your house, arrive by 7 PM. Welcome dinner 7:30 PM at Locke Coffee.'},
+    {start:'20260707T080000',end:'20260707T210000',title:'CCC Cincinnati \u2014 Day 2: Kickoff',loc:'Coworking Space, Covington, KY',desc:'8 AM van pickup at houses, breakfast at Locke Coffee, then a full day of trainings, panel, and group activity at the coworking space. Dinner back at Locke.'},
+    {start:'20260708T080000',end:'20260708T193000',title:'CCC Cincinnati \u2014 Day 3: Level Up',loc:'Coworking Space, Covington, KY',desc:'8 AM van pickup at houses, breakfast at Locke Coffee, sessions + Q&A + hot seat at the coworking space. Evening coffee shop tour and celebratory dinner at Locke Coffee.'},
+    {start:'20260709T073000',end:'20260709T090000',title:'CCC Cincinnati \u2014 Day 4: Wrap Up & Departure',loc:'Locke Coffee, Newport, KY',desc:'Grab-and-go breakfast at Locke Coffee from 7:30 AM. Out of the houses by 9 AM. Arrange your own ride to CVG (~25-30 min). Book flights after 12 PM EST.'}
   ];
   function dtstamp(){const d=new Date();return d.getUTCFullYear()+pad(d.getUTCMonth()+1)+pad(d.getUTCDate())+'T'+pad(d.getUTCHours())+pad(d.getUTCMinutes())+pad(d.getUTCSeconds())+'Z';}
   function buildICS(){
