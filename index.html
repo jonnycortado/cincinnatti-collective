@@ -171,6 +171,16 @@
   .hc-map:hover { background:rgba(200,148,63,0.1); }
   .hc-note { font-size:14px; color:var(--gray-300); line-height:1.7; margin-top:4px; }
   .hc-sticky { font-size:13.5px; color:var(--gray-500); line-height:1.6; margin-top:18px; padding-top:16px; border-top:1px solid var(--line); }
+  .hc-drive { margin-top:16px; padding-top:16px; border-top:1px solid var(--line); }
+  .hc-drive-label { font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:var(--gold-1); font-weight:700; margin-bottom:6px; }
+  .hc-drive-text { font-size:13.5px; color:var(--gray-300); line-height:1.6; }
+  .breakout-card { background:var(--bg-soft); border:1px solid var(--line); border-radius:18px; padding:28px 40px; max-width:480px; width:100%; margin-bottom:28px; }
+  .breakout-card:empty { display:none; }
+  .bo-label { font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:var(--gold-1); font-weight:700; margin-bottom:8px; }
+  .bo-intro { font-size:14px; color:var(--gray-300); line-height:1.6; margin-bottom:16px; }
+  .bo-list { list-style:none; padding:0; margin:0; }
+  .bo-list li { font-family:'Fraunces',serif; font-size:18px; font-weight:500; color:var(--ink); padding:9px 0; border-top:1px solid var(--line); }
+  .bo-list li:first-child { border-top:none; }
   .meet-card {
     background:var(--bg-soft); border:1px solid var(--line); border-radius:18px; padding:28px 40px; max-width:480px; width:100%; margin-bottom:28px;
   }
@@ -386,6 +396,7 @@
     <div class="r-greeting">Welcome</div>
     <div class="r-company" id="revealCompany"></div>
     <div class="house-card" id="houseCard"></div>
+    <div class="breakout-card" id="breakoutCard"></div>
     <div class="meet-card">
       <div class="hc-label">Where We Meet</div>
       <div class="meet-text">Your house is for sleeping &amp; hanging out. Everything else happens just across the river in Northern Kentucky &mdash; about 15&ndash;20 min from the houses, and the two venues are only 5 min apart.</div>
@@ -493,29 +504,37 @@
 
 <script>
 const HOUSES = {
-  hackberry: { name:"Hackberry House", addr:"3018 Hackberry Street<br>Cincinnati, OH 45206", map:"https://maps.google.com/?q=3018+Hackberry+Street+Cincinnati+OH+45206" },
-  kinney:    { name:"Kinney House", addr:"1845 Kinney Avenue<br>Cincinnati, OH 45207", map:"https://maps.google.com/?q=1845+Kinney+Avenue+Cincinnati+OH+45207" }
+  hackberry: { name:"Hackberry House", addr:"3018 Hackberry Street<br>Cincinnati, OH 45206", map:"https://maps.google.com/?q=3018+Hackberry+Street+Cincinnati+OH+45206", drivers:"Arham (Sora), Dusty (Salt &amp; Light), Maggie (Carrier) &amp; Alex (Baselia) all have cars \u2014 plenty of seats for the house.", van:false },
+  kinney:    { name:"Kinney House", addr:"1845 Kinney Avenue<br>Cincinnati, OH 45207", map:"https://maps.google.com/?q=1845+Kinney+Avenue+Cincinnati+OH+45207", drivers:"Nada (Misk), Daniel (Royal) &amp; Paige (Coffee, I\'m in Love) have cars, plus the 12-passenger van swings by from next door with extra seats.", van:false }
 };
 const GUESTS = [
-  {co:"Tres Manos Coffee", house:"hackberry"},
-  {co:"Sweet Pours Coffee", house:"hackberry"},
-  {co:"Meno Coffee", house:"hackberry"},
-  {co:"Rowena Coffee", house:"hackberry"},
-  {co:"Sora Coffee", house:"hackberry"},
-  {co:"Salt and Light Coffee", house:"hackberry"},
-  {co:"Lyles Coffee", house:"hackberry"},
-  {co:"Baselia Coffee", house:"hackberry"},
-  {co:"Misk Coffee Co", house:"kinney"},
-  {co:"Maya\u2019s Macchiatos", house:"kinney"},
-  {co:"Royal Coffee", house:"kinney"},
-  {co:"Water Lily Coffee", house:"kinney"},
-  {co:"Poema Coffee", house:"kinney"},
-  {co:"Colada Kulture Co", house:"kinney"},
-  {co:"KC Cocktail Company", house:"kinney"},
-  {co:"Kasama Coffee Collective", house:"kinney"},
-  {co:"TLC Coffee Bar", house:"kinney"},
-  {co:"Carrier Coffee", house:"offsite"}
+  {co:"Tres Manos Coffee", house:"hackberry", group:1},
+  {co:"Sweet Pours Coffee", house:"hackberry", group:4},
+  {co:"Meno Coffee", house:"hackberry", group:2},
+  {co:"Rowena Coffee", house:"hackberry", group:2},
+  {co:"Sora Coffee", house:"hackberry", group:3},
+  {co:"Salt and Light Coffee", house:"hackberry", group:3},
+  {co:"Lyles Coffee", house:"hackberry", group:5},
+  {co:"Baselia Coffee", house:"hackberry", group:2},
+  {co:"Misk Coffee Co", house:"kinney", group:5},
+  {co:"Maya\u2019s Macchiatos", house:"kinney", group:5},
+  {co:"Royal Coffee", house:"kinney", group:3},
+  {co:"Water Lily Coffee", house:"kinney", group:1},
+  {co:"Poema Coffee", house:"kinney", group:1},
+  {co:"Colada Kulture Co", house:"kinney", group:3},
+  {co:"Coffee, I\'m in Love", house:"kinney", group:4},
+  {co:"Kasama Coffee Collective", house:"kinney", group:1},
+  {co:"TLC Coffee Bar", house:"kinney", group:5},
+  {co:"Carrier Coffee", house:"offsite", group:4}
 ].sort((a,b)=>a.co.localeCompare(b.co));
+
+const GROUPS = {
+  1:["Tres Manos Coffee","Water Lily Coffee","Poema Coffee","Kasama Coffee Collective"],
+  2:["Meno Coffee","Rowena Coffee","Baselia Coffee"],
+  3:["Salt and Light Coffee","Sora Coffee","Royal Coffee","Colada Kulture Co"],
+  4:["Sweet Pours Coffee","Carrier Coffee","Coffee, I\u2019m in Love"],
+  5:["Lyles Coffee","Maya\u2019s Macchiatos","TLC Coffee Bar","Misk Coffee Co"]
+};
 
 // Company search input
 const dd = document.getElementById('ddList');
@@ -584,11 +603,23 @@ function showReveal(){
       <div class="hc-house">${h.name}</div>
       <div class="hc-addr">${h.addr}</div>
       <a class="hc-map" href="${h.map}" target="_blank">Open in Maps &rarr;</a>
-      <div class="hc-sticky">Please look for a sticky note on the door with your name on it.</div>`;
+      <div class="hc-sticky">Please look for a sticky note on the door with your name on it.</div>
+      <div class="hc-drive"><div class="hc-drive-label">&#9673; Getting Around</div><div class="hc-drive-text">${h.drivers} We travel together each day &mdash; coordinate with your house.</div></div>`;
   }
+  renderBreakout(g);
   document.getElementById('messageStep').classList.remove('show');
   document.getElementById('reveal').classList.add('show');
   window.scrollTo(0,0);
+}
+function renderBreakout(g){
+  const bc=document.getElementById('breakoutCard');
+  if(!bc) return;
+  if(!g.group || !GROUPS[g.group]){ bc.innerHTML=''; return; }
+  const mates=GROUPS[g.group].filter(co=>co!==g.co);
+  const list=mates.map(co=>`<li>${co}</li>`).join('');
+  bc.innerHTML=`<div class="bo-label">&#9673; Your Breakout Group</div>
+    <div class="bo-intro">You&rsquo;ll meet with these companies during Small Group Time throughout the weekend.</div>
+    <ul class="bo-list">${list}</ul>`;
 }
 document.getElementById('msgContinueBtn').addEventListener('click', showReveal);
 function backToStart(){

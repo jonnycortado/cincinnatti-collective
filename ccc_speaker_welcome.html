@@ -152,6 +152,8 @@
   .flight-ico { color:var(--gold-1); font-size:12px; }
   .flight-time { font-family:'Fraunces',serif; font-size:16px; font-weight:500; color:var(--ink); }
   .flight-note { margin-top:10px; padding-top:10px; border-top:1px solid var(--line); font-size:12.5px; line-height:1.5; color:var(--slate-1); }
+  .ride-line { background:rgba(200,148,63,0.07); border:1px solid var(--gray-700); border-radius:10px; padding:11px 15px; margin-bottom:18px; font-size:12.5px; line-height:1.5; color:var(--gray-300); display:flex; align-items:flex-start; gap:8px; }
+  .ride-line .ride-ico { color:var(--gold-1); font-size:10px; margin-top:3px; flex-shrink:0; }
   .logistics-block { margin-top:34px; padding-top:24px; border-top:1px solid var(--line); }
   .log-label { font-size:12px; letter-spacing:2px; text-transform:uppercase; color:var(--gold-1); font-weight:700; text-align:center; margin-bottom:4px; }
   .log-sub { font-size:11.5px; color:var(--gray-500); text-align:center; margin-bottom:18px; }
@@ -381,17 +383,17 @@ const SPEAKERS = [
     {when:"Day 2 \u00b7 3:45 PM", t:"Panel (Moderator)", d:"You\'re moderating the six-figure scaling panel with Corbin, Nikki & Randy."},
     {when:"Day 3 \u00b7 3:00 PM", t:"Q&A: Open Floor", d:"Closing open-floor Q&A with you, Randy, Nikki & Ryan before the hot seat."}
   ]},
-  {name:"Corbin", co:"Nightowl Coffee", role:"Speaker", flightIn:"Tue Jul 7 \u00b7 12:33 PM", flightOut:"Wed Jul 8 \u00b7 10:05 AM", flightNote:"Heads up \u2014 your Wed 10:05 AM flight means you\'ll depart before Day 3 sessions begin. Plan to leave the house by ~9:15 AM. All your sessions are on Day 2.", sessions:[
+  {name:"Corbin", co:"Nightowl Coffee", role:"Speaker", ridesWithJonny:true, flightIn:"Tue Jul 7 \u00b7 12:33 PM", flightOut:"Wed Jul 8 \u00b7 10:05 AM", flightNote:"Heads up \u2014 your Wed 10:05 AM flight means you\'ll depart before Day 3 sessions begin. Plan to leave the house by ~9:15 AM. All your sessions are on Day 2.", sessions:[
     {when:"Day 2 \u00b7 1:30 PM", t:"Building Team Culture & Leading a Team", d:"45 min at the coworking space. You land 12:33 PM \u2014 a van can bring you straight there."},
     {when:"Day 2 \u00b7 2:30 PM", t:"Sales", d:"45 min, right after a short break."},
     {when:"Day 2 \u00b7 3:45 PM", t:"Panel (Panelist)", d:"Scaling to multiple six figures, moderated by Jonny."}
   ]},
-  {name:"Nikki", co:"Anecho Coffee", role:"Speaker", flightIn:"Mon Jul 6 \u00b7 11:48 AM", flightOut:"Thu Jul 9 \u00b7 12:56 PM", sessions:[
+  {name:"Nikki", co:"Anecho Coffee", role:"Speaker", ridesWithJonny:true, flightIn:"Mon Jul 6 \u00b7 11:48 AM", flightOut:"Thu Jul 9 \u00b7 12:56 PM", sessions:[
     {when:"Day 2 \u00b7 3:45 PM", t:"Panel (Panelist)", d:"Scaling to multiple six figures, moderated by Jonny."},
     {when:"Day 3 \u00b7 9:30 AM", t:"Corporate Positioning, Sales & Lifestyle", d:"90 min at the coworking space \u2014 your headline session."},
     {when:"Day 3 \u00b7 3:00 PM", t:"Q&A: Open Floor", d:"Closing open-floor Q&A before the hot seat."}
   ]},
-  {name:"Randy", co:"Intentional Espresso", role:"Speaker", flightIn:"Mon Jul 6 \u00b7 4:04 PM", flightOut:"Thu Jul 9 \u00b7 1:58 PM", sessions:[
+  {name:"Randy", co:"Intentional Espresso", role:"Speaker", ridesWithJonny:true, flightIn:"Mon Jul 6 \u00b7 4:04 PM", flightOut:"Thu Jul 9 \u00b7 1:58 PM", sessions:[
     {when:"Day 2 \u00b7 10:00 AM", t:"Systems That Scale", d:"60 min at the coworking space, opening the first full morning."},
     {when:"Day 2 \u00b7 3:45 PM", t:"Panel (Panelist)", d:"Scaling to multiple six figures, moderated by Jonny."},
     {when:"Day 3 \u00b7 3:00 PM", t:"Q&A: Open Floor", d:"Closing open-floor Q&A before the hot seat."}
@@ -401,7 +403,7 @@ const SPEAKERS = [
     {when:"Day 3 \u00b7 6:45 PM", t:"Coffee Shop Tour", d:"You\'re hosting \u2014 an after-hours tour of Locke, the whole place to ourselves, right before our celebratory dinner there."},
     {when:"Day 3 \u00b7 3:00 PM", t:"Q&A: Open Floor", d:"Closing open-floor Q&A before the hot seat."}
   ]},
-  {name:"Clay Erickson", co:"Videographer", role:"Videographer", flightIn:"Sat Jul 4 \u00b7 4:00 PM", flightOut:"Thu Jul 9 \u00b7 5:00 PM", flightNote:"You\'re in town early (Sat) and out Thu evening \u2014 you\'ll have the whole weekend covered.", sessions:[
+  {name:"Clay Erickson", co:"Videographer", role:"Videographer", ridesWithJonny:true, flightIn:"Sat Jul 4 \u00b7 4:00 PM", flightOut:"Thu Jul 9 \u00b7 5:00 PM", flightNote:"You\'re in town early (Sat) and out Thu evening \u2014 you\'ll have the whole weekend covered.", sessions:[
     {when:"All weekend", t:"Capturing the weekend", d:"You\'ll be filming throughout \u2014 sessions, candid moments, and the highlights. Coordinate with Jonny on must-capture moments."}
   ]}
 ];
@@ -464,7 +466,8 @@ function showSpeakerReveal(){
   document.getElementById('revealCo').textContent = (s.co===s.role) ? s.role : (s.co.replace('\u00b7','\u00b7')+'  \u2014  '+s.role);
   const sc=document.getElementById('sessions');
   const flight = (s.flightIn||s.flightOut) ? `<div class="flight-card"><div class="flight-row"><span class="flight-leg"><span class="flight-ico">\u2708</span> Arrive</span><span class="flight-time">${s.flightIn||'\u2014'}</span></div><div class="flight-row"><span class="flight-leg"><span class="flight-ico">\u2708</span> Depart</span><span class="flight-time">${s.flightOut||'\u2014'}</span></div>${s.flightNote?`<div class="flight-note">${s.flightNote}</div>`:''}</div>` : '';
-  sc.innerHTML='<div class="sessions-label">Your Sessions \u2014 tap for details</div>'+flight+
+  const ride = s.ridesWithJonny ? `<div class="ride-line"><span class="ride-ico">\u25c9</span> Jonny drives the group each day in the 12-passenger van \u2014 meet at Hewitt House.</div>` : '';
+  sc.innerHTML='<div class="sessions-label">Your Sessions \u2014 tap for details</div>'+flight+ride+
     s.sessions.map(se=>`<div class="sess"><div class="sess-when">${se.when}</div><div class="sess-body"><div class="st">${se.t}</div><div class="sd">${se.d}</div></div></div>`).join('');
   sc.querySelectorAll('.sess').forEach(el=>el.addEventListener('click',()=>el.classList.toggle('open')));
   if(s.logistics && s.logistics.length){
